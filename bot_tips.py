@@ -50,7 +50,7 @@ La función `input()` sirve para que el usuario pueda escribir un dato desde su 
 `edad = int(input("¿Cuántos años tienes? "))`""",
 
     """💡 **Concepto Clave: ¿Para qué sirve el operador % (Módulo)?**
-En la escuela nos enseñaron que al división de dos números queda un residuo o sobrante si no es exacta. El signo de porcentaje `%` en Python no calcula porcentajes, sino que te da ese residuo. Es el truco número uno para saber si un número es par.
+En la escuela nos enseñaron que al división de dos números queda un residuo o sobrante si no es exacta. El signo de porcentaje `%` in Python no calcula porcentajes, sino que te da ese residuo. Es el truco número uno para saber si un número es par.
 
 📝 **Ejemplo:**
 `print(10 % 2)` # Da 0 (porque 10 dividido 2 da 5 exacto, sobra 0).
@@ -163,15 +163,15 @@ async def mandar_tip_al_tema(bot):
             text=tip_seleccionado,
             message_thread_id=TEMA_ID
         )
-        print("🤖 Tip automático enviado con éxito.")
+        print("🤖 Tip enviado con éxito al tema.")
     except Exception as e:
         print(f"❌ Error al enviar tip: {e}")
 
 async def bucle_temporal(application):
-    await asyncio.sleep(10) # Espera 10 segundos al encender antes de enviar el primer tip
+    await asyncio.sleep(10) # Espera 10 segundos al iniciar antes de mandar el primer tip
     while True:
         await mandar_tip_al_tema(application.bot)
-        await asyncio.sleep(3600) # Envía un tip automático cada 1 hora (3600 segundos)
+        await asyncio.sleep(3600) # Espera exactamente 1 hora (3600 segundos)
 
 async def responder_palabra_tip(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.id == CHAT_ID and update.effective_message.message_thread_id == TEMA_ID:
@@ -184,6 +184,7 @@ async def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, responder_palabra_tip))
     application.add_handler(CommandHandler("tip", responder_palabra_tip))
     
+    # Aquí activamos el reloj automático en segundo plano para que corra cada hora
     asyncio.create_task(bucle_temporal(application))
 
     print("🚀 El Bot está encendido y escuchando el chat... (Presiona Ctrl+C para apagar)")
